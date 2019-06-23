@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html>
+  
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  <meta name="author" content="Liang He">
+  
+  
+  <title>Docker相关安装备忘 | Jaimely</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Engineering,Docker,">
+  
+
+  
+  <meta name="description" content="Jaimely">
+
+  
+
+  <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"rzSFOSCfr6y6GrqxVzsypKwQ-gzGzoHsz","appkey":"vxvxtRkY1qUVysFsNjBcjTP9","comment":true,"count":true},
+    welcome: {"enable":true,"interval":30},
+    start_time: "2019-03-24",
+    passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
+    is_post: true,
+    lock: false,
+    author: "Liang He",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  <script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/touch-icon.png">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css">
+
+  
+</head>
+  <body>
+    <header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">Jaimely</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 改变思维-优化效率-打造品牌-提升势能</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/tags/" target="_self">标签</a>
+      
+        <a href="/categories/" target="_self">分类</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/njucs/" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2019-04-11
+    </span>
+    
+      <span>
+        | <a href="/categories/Engineering/"><i class="fa fa-bookmark"></i>Engineering</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    Docker相关安装备忘
+  </h1>
+  
+  <article class="passage-article">
+    <h3 id="Docker基本操作"><a href="#Docker基本操作" class="headerlink" title="Docker基本操作"></a>Docker基本操作</h3><p>下载image<br>docker pull ubuntu:18.04</p>
+<p>从image生成个repository<br>docker run -ti ubuntu:18.04<br>(每次run后可能需要source /etc/profile配置环境变量)</p>
+<p>$ docker ps // 查看所有正在运行容器<br>$ docker stop containerId // containerId 是容器的ID<br>$ docker ps -a // 查看所有容器<br>$ docker ps -a -q // 查看所有容器ID<br>$ docker stop $(docker ps -a -q) //  stop停止所有容器<br>$ docker rm $(docker ps -a -q) //   remove删除所有容器及对应数据卷</p>
+<p>查看docker磁盘使用情况<br>docker system df</p>
+<p>更多清理方式参考：<a href="http://dockone.io/article/3056" target="_blank" rel="noopener">http://dockone.io/article/3056</a></p>
+<p>查看镜像<br>docker images</p>
+<p>查看repository<br>docker ps</p>
+<p>保存repository更新</p>
+<h1 id="docker-commit-OPTIONS-CONTAINER-REPOSITORY-TAG"><a href="#docker-commit-OPTIONS-CONTAINER-REPOSITORY-TAG" class="headerlink" title="docker commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]]"></a>docker commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]]</h1><p>-a :提交的镜像作者；<br>-c :使用Dockerfile指令来创建镜像；<br>-m :提交时的说明文字；<br>-p :在commit时，将容器暂停。</p>
+<p>根据这个myubuntu容器提交镜像<br>[root@docker-test1 ~]# docker commit -a “wangshibo” -m “this is test” 651a8541a47d myubuntu:v1<br>sha256:6ce4aedd12cda693d0bbb857cc443a56f9f569106e09ec61aa53563d0932ea4d</p>
+<p>再次查看镜像,发现镜像myubuntu:v1已经提交到本地了<br>[root@docker-test1 ~]# docker images<br>REPOSITORY      TAG                 IMAGE ID                CREATED               SIZE<br>myubuntu            v1                  6ce4aedd12cd        59 seconds ago      84.1 MB</p>
+<p>在本机删除这个镜像<br>[root@docker-test1 ~]# docker images<br>REPOSITORY           TAG                 IMAGE ID            CREATED             SIZE<br>myubuntu             v1                  6ce4aedd12cd        15 minutes ago      84.1 MB<br>wangshibo/myubuntu   v1                  6ce4aedd12cd        15 minutes ago      84.1 MB<br>docker.io/ubuntu     16.04               7aa3602ab41e        5 weeks ago         115 MB</p>
+<p>应该先删除docker tag改名前的镜像，使用镜像名称删除。（一般在docker tag镜像改名后，最好删除改名前的镜像）<br>[root@docker-test1 ~]# docker rmi myubuntu:v1<br>Untagged: myubuntu:v1<br>Untagged: wangshibo/myubuntu@sha256:e9cd9075d262848a307c92751e1a5890d883b814a31abd118161442461a1ca2d</p>
+<p>[root@docker-test1 ~]# docker images<br>REPOSITORY           TAG                 IMAGE ID            CREATED             SIZE<br>wangshibo/myubuntu   v1                  6ce4aedd12cd        15 minutes ago      84.1 MB<br>docker.io/ubuntu     16.04               7aa3602ab41e        5 weeks ago         115 MB</p>
+<p>这个时候就可以删除镜像ID删除了<br>[root@docker-test1 ~]# docker rmi 6ce4aedd12cd<br>Untagged: wangshibo/myubuntu:v1<br>Deleted: sha256:6ce4aedd12cda693d0bbb857cc443a56f9f569106e09ec61aa53563d0932ea4d<br>Deleted: sha256:0ddeb6a16badd042914c2e72b9ef0331550c1cdcc4bdc6650a90cd9f57f1501b<br>[root@docker-test1 ~]# docker images<br>REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE<br>docker.io/ubuntu    16.04               7aa3602ab41e        5 weeks ago         115 MB</p>
+<p>无法删除image的情况：<br>[root@docker-test1 ~]# systemctl stop docker<br>[root@docker-test1 ~]# cat /proc/mounts | grep “docker”<br>/dev/mapper/centos-root /var/lib/docker/containers xfs rw,relatime,attr2,inode64,noquota 0 0</p>
+<p>[root@docker-test1 ~]# umount /var/lib/docker/containers<br>[root@docker-test1 ~]# rm -rf /var/lib/docker<br>[root@docker-test1 ~]# systemctl start docker</p>
+<p>查看系统中文件的使用情况:   df -h<br>查看当前目录下各个文件及目录占用空间大小:  du -sh *</p>
+<h3 id="安装基本的工具"><a href="#安装基本的工具" class="headerlink" title="安装基本的工具"></a>安装基本的工具</h3><p>apt-get update<br>apt-get install wget<br>apt-get install yum</p>
+<p>(以下两步安装OpenSDK)<br>apt-get install default-jre<br>apt-get install default-jdk</p>
+<p>(以下几步安装JDK)<br>apt-get install python-software-properties<br>apt-get install software-properties-common<br>add-apt-repository ppa:webupd8team/java<br>apt-get update<br>apt-get install oracle-java8-installer</p>
+<p>apt-get install python2.7<br>apt-get install python3.7<br>(我用的ubuntu18.04，已经安装了python2.7和python3.6。此时python用的2.7，python3用的3.6，python3.7用的3.7)</p>
+<h3 id="Docker中运行可视化工具"><a href="#Docker中运行可视化工具" class="headerlink" title="Docker中运行可视化工具"></a>Docker中运行可视化工具</h3><p>brew install socat<br>brew install Caskroom/cask/xquartz<br>打开Xquartz软件，偏好设置-&gt;安全性-&gt;勾选允许从网络客户端连接。<br>Reboot</p>
+<p>lsof -i4 | grep 6000  确保6000没有被占用（占用的kill掉）<br>socat TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:\”$DISPLAY\”<br>open -a Xquartz<br>$ docker run -e -ti DISPLAY={IP of en0}:0 dockerimage<br>可以安装一个firefox，然后运行firefox看效果</p>
+<p>(另一种提到的方法)</p>
+<ol>
+<li>Install XQuartz</li>
+<li>Open it, goto preferences &gt; Security &gt; allow connections from network clients</li>
+<li>Reboot</li>
+<li>Start XQuartz (from the applications folder or with open -a XQuartz)</li>
+<li>Allow incoming connections from your ip with xhost + $IP</li>
+<li>Run firefox in your docker container<br>docker run -it -e DISPLAY=$IP:0 -v /tmp/.X11-unix:/tmp/.X11-unix <image> firefox</image></li>
+</ol>
+<p>Ref: <a href="http://kartoza.com/en/blog/how-to-run-a-linux-gui-application-on-osx-using-docker/" target="_blank" rel="noopener">http://kartoza.com/en/blog/how-to-run-a-linux-gui-application-on-osx-using-docker/</a></p>
+<h3 id="安装Neo4j"><a href="#安装Neo4j" class="headerlink" title="安装Neo4j"></a>安装Neo4j</h3><p>Docker Neo4j<br>Docker pull neo4j<br>docker run -d -p 7473-7474:7473-7474 -p 7687:7687 neo4j<br>localhost:7474/browser</p>
+<h3 id="安装Storm"><a href="#安装Storm" class="headerlink" title="安装Storm"></a>安装Storm</h3><p>(安装Zookeeper)<br>wget <a href="http://mirrors.shu.edu.cn/apache/zookeeper/stable/zookeeper-3.4.12.tar.gz" target="_blank" rel="noopener">http://mirrors.shu.edu.cn/apache/zookeeper/stable/zookeeper-3.4.12.tar.gz</a><br>tar -xzvf zookeeper-3.4.12.tar.gz</p>
+<p>vim /etc/profile<br>         export ZOOKEEPER_HOME=/opt/software/zookeeper-3.4.6<br>         export PATH=$PATH:$ZOOKEEPER_HOME/bin<br>source /etc/profile</p>
+<p>将conf目录下的zoo_sample.cfg复制并修改为zoo.cfg，并将里面的配置修改为：<br>tickTime=2000<br>initLimit=5<br>syncLimit=2<br>dataDir=/home/dragon/Storm/zookeeper-3.4.6<br>clientPort=2181<br>zkServer.sh start     验证是否成功</p>
+<p>(安装ZeroMQ)<br>wget <a href="https://github.com/zeromq/libzmq/releases/download/v4.2.5/zeromq-4.2.5.tar.gz" target="_blank" rel="noopener">https://github.com/zeromq/libzmq/releases/download/v4.2.5/zeromq-4.2.5.tar.gz</a><br>tar -zvxf zeromq-4.0.5.tar.gz<br>cd zeromq-4.0.5/<br>./configure<br>make<br>make install<br>ldconfig</p>
+<p>(安装JZMQ)<br>git clone git://github.com/nathanmarz/jzmq.git<br>cd jzmq/<br>touch src/classdist_noinst.stamp<br>apt-get install libtool-bin   (执行下一步有时候会提示缺少libtool，但实际已经安装，需要再执行此命令才行)<br>./autogen.sh<br>./configure<br>cd src/org/zeromq<br>javac *.java<br>make<br>make install</p>
+<p>(安装Storm)<br>wget <a href="https://www-us.apache.org/dist/storm/apache-storm-1.2.2/apache-storm-1.2.2.tar.gz" target="_blank" rel="noopener">https://www-us.apache.org/dist/storm/apache-storm-1.2.2/apache-storm-1.2.2.tar.gz</a><br>tar -zxvf apache-storm-1.2.2.tar.gz</p>
+<p>修改/etc/profile<br>export STORM_HOME=/home/heliang/apache-storm-1.2.2<br>export PATH=$PATH:$STORM_HOME/bin<br>source /etc/profile</p>
+<p>修改./conf/storm.yaml<br>storm.zookeeper.servers:</p>
+<pre><code>- &quot;127.0.0.1&quot; 
+</code></pre><p>nimbus.host: “127.0.0.1”<br>storm.local.dir: /home/heliang/apache-storm-1.2.2<br>supervisor.slots.ports:</p>
+<pre><code>- 6700
+- 6701
+- 6702
+- 6703
+</code></pre><p>(之前运行zkServer.sh start)<br>storm nimbus<br>storm supervisor<br>storm ui    (通过127.0.0.1:8080查看topology运行情况)</p>
+<h3 id="安装ES"><a href="#安装ES" class="headerlink" title="安装ES"></a>安装ES</h3><blockquote>
+<blockquote>
+<blockquote>
+<p>下载ES+Kibana<br>wget <a href="https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.5.1.tar.gz" target="_blank" rel="noopener">https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.5.1.tar.gz</a><br>wget wget <a href="https://artifacts.elastic.co/downloads/kibana/kibana-6.5.1-linux-x86_64.tar.gz" target="_blank" rel="noopener">https://artifacts.elastic.co/downloads/kibana/kibana-6.5.1-linux-x86_64.tar.gz</a><br>tar -zxvf *.gz</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>一般情况下kibana的版本必须和Elasticsearch安装的版本一致</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>安装ElasticSearch<br>Root账户无法运行ES<br>(可能先要设置一下root密码，以便后面获取root权限：sudo passwd，然后输入密码root)<br>adduser es  (密码es)<br>chown -R es ./elasticsearch-6.5.1/<br>su es<br>./bin/elasticsearch</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>可以运行如下命令看是否安装成功<br>curl ‘<a href="http://localhost:9200/?pretty&#39;" target="_blank" rel="noopener">http://localhost:9200/?pretty&#39;</a></p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>安装Kibana<br>解压后直接./bin/kibana即可</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<h3 id="基于DeepPavlov的对话系统"><a href="#基于DeepPavlov的对话系统" class="headerlink" title="基于DeepPavlov的对话系统"></a>基于DeepPavlov的对话系统</h3><p>安装(必须Python3.6以上)：<br>virtualenv env     或者<br>virtualenv –python=python3 env</p>
+<p>source ./env/bin/activate<br>pip install deeppavlov</p>
+
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Docker基本操作"><span class="toc-text">Docker基本操作</span></a></li></ol><li class="toc-item toc-level-1"><a class="toc-link" href="#docker-commit-OPTIONS-CONTAINER-REPOSITORY-TAG"><span class="toc-text">docker commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]]</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装基本的工具"><span class="toc-text">安装基本的工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Docker中运行可视化工具"><span class="toc-text">Docker中运行可视化工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装Neo4j"><span class="toc-text">安装Neo4j</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装Storm"><span class="toc-text">安装Storm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装ES"><span class="toc-text">安装ES</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基于DeepPavlov的对话系统"><span class="toc-text">基于DeepPavlov的对话系统</span></a></li></ol>
+  </li></div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: Jaimely</div>
+      
+        <div>
+          原文链接: 
+          <a href target="_blank">https://njucs.github.io/passages/2019-04-11-docker/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/Docker/"><i class="fa fa-tags"></i>Docker</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      <div class="site-footer-col">
+        <h5 class="site-footer-title">研究内容</h5>
+        
+          <span class="site-footer-item">
+            <a href="https://njucs.github.io/" target="_blank">论文发表</a>
+          </span>
+        
+          <span class="site-footer-item">
+            <a href="https://njucs.github.io/" target="_blank">系统展示</a>
+          </span>
+        
+      </div>
+    
+      <div class="site-footer-col">
+        <h5 class="site-footer-title">商业成果</h5>
+        
+          <span class="site-footer-item">
+            <a href="https://github.com/Samsung/KnowledgeSharingPlatform" target="_blank">K# Knowledge Graph</a>
+          </span>
+        
+          <span class="site-footer-item">
+            <a href="https://www.samsung.com/global/galaxy/apps/bixby/" target="_blank">Samsung Bixby</a>
+          </span>
+        
+      </div>
+    
+      <div class="site-footer-col">
+        <h5 class="site-footer-title">课程推荐</h5>
+        
+          <span class="site-footer-item">
+            <a href="http://web.stanford.edu/class/cs224n/index.html" target="_blank">Stanford CS224n</a>
+          </span>
+        
+          <span class="site-footer-item">
+            <a href="http://zh.d2l.ai/" target="_blank">动手学深度学习</a>
+          </span>
+        
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第 <span id="site-count"></span> 位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> Email: njucs2001@hotmail.com
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2019 <a href="https://github.com/dongyuanxin/theme-ad/" target="_blank">Theme-AD</a>.
+      Created by <a href="https://godbmw.com/" target="_blank">GodBMW</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+        
+          <div>
+            <img src="/images/wechat.png" alt="WeChat">
+            
+              <p>WeChat</p>
+            
+          </div>
+        
+          <div>
+            <img src="/images/alipay.png" alt="AliPay">
+            
+              <p>AliPay</p>
+            
+          </div>
+        
+      </div>
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="javascript:void(0);" data-enable="false">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/passages/2019-03-24-githubpageinit/" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    <a href="javascript:void(0);" id="site-reward">
+      <i class="fa fa-thumbs-up"></i>
+    </a>
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+
+
+
+
+
+    
+  </body>
+</html>
